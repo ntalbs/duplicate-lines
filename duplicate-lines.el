@@ -2,8 +2,28 @@
 
 ;; Copyright © 2018 Seongjun Yun
 ;; Author: Seongjun Yun
+;; Keywords: duplicate line region selection
 ;; URL: https://github.com/ntalbs/duplicate-lines
 ;; Version: 0.0.1
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;;; Commentary:
+;; Provides a function that duplicates current line or region.
+;; If the active region doesn't start at the beginning of the line or
+;; doesn't end at the end of the line, it will be expanded.
+;; After duplicate, it will keep the selection of duplicated region.
+;; Basically, the behaviour should be similar to Eclipse or IntelliJ IDEA.
+
+;;; Code:
 
 (defun line-start-p (p)
     (goto-char p)
