@@ -26,8 +26,8 @@
 ;;; Code:
 
 (defun line-start-p (p)
-    (goto-char p)
-    (= 0 (current-column)))
+  (goto-char p)
+  (= 0 (current-column)))
 
 (defun expand-selection (p1 p2)
   (let (start end)
