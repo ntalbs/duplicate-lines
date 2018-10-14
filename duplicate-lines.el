@@ -69,7 +69,7 @@
 
 (defun duplicate-region-default-binding ()
   (interactive)
-  (global-set-key (kbd "s-<down>") 'duplicate-region))
+  (global-set-key (kbd "M-s-<down>") 'duplicate-region))
 
 (provide 'duplicate-lines)
 ;;; duplicate-lines.el ends here
