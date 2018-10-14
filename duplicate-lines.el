@@ -26,10 +26,14 @@
 ;;; Code:
 
 (defun line-start-p (p)
+  "Return 't if position P is beginning of line."
   (goto-char p)
   (= 0 (current-column)))
 
 (defun expand-selection (p1 p2)
+  "Expand selection to contain while lines.
+Expand P1 to beginning of line and P2 to end of line (or more precisely)
+the beginning of next line."
   (let (start end)
     (cond (mark-active
            (goto-char p1)
@@ -48,12 +52,16 @@
     (set-mark start)))
 
 (defun move-to-yank-pos (p)
+  "Move pointer P to correct yank position."
   (goto-char p)
   (unless (line-start-p p)
     (unless (= 0 (forward-line))
       (newline))))
 
 (defun duplicate-region (p1 p2)
+  "Duplicate line or region.
+If it has active mark (P1, P2), it will expand the selection and duplicate it.
+If it doesn't have active mark, it will select current line and duplicate it."
   (interactive "r")
   (let (start end len text)
     (expand-selection p1 p2)
@@ -68,6 +76,7 @@
     (setq transient-mark-mode (cons 'only t))))
 
 (defun duplicate-region-default-binding ()
+  "Default binding of duplicate-region, M-s-<down>."
   (interactive)
   (global-set-key (kbd "M-s-<down>") 'duplicate-region))
 
