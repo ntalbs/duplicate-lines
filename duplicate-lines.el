@@ -58,6 +58,7 @@ the beginning of next line."
     (unless (= 0 (forward-line))
       (newline))))
 
+;;;###autoload
 (defun duplicate-region (p1 p2)
   "Duplicate line or region.
 If it has active mark (P1, P2), it will expand the selection and duplicate it.
@@ -75,6 +76,7 @@ If it doesn't have active mark, it will select current line and duplicate it."
     (setq deactivate-mark nil)
     (setq transient-mark-mode (cons 'only t))))
 
+;;;###autoload
 (defun duplicate-region-default-binding ()
   "Default binding of duplicate-region, M-s-<down>."
   (interactive)
