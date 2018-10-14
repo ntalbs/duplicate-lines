@@ -25,10 +25,14 @@
 
 ;;; Code:
 
-(defun line-start-p (p)
-  "Return 't if position P is beginning of line."
-  (goto-char p)
+(defun line-start-p ()
+  "Return 't if current position is beginning of line."
   (= 0 (current-column)))
+
+(defun line-start-after-forward-line-p ()
+  "Return 't if the position is beginning of line after foward-line."
+  (forward-line)
+  (line-start-p))
 
 (defun expand-selection (p1 p2)
   "Expand selection to contain while lines.
@@ -40,12 +44,12 @@ the beginning of next line."
            (beginning-of-line)
            (setq start (point))
            (goto-char p2)
-           (unless (= 0 (current-column)) (unless (= 0 (forward-line)) (newline)))
+           (unless (= 0 (current-column)) (unless (line-start-after-forward-line-p) (newline)))
            (setq end (point)))
           (t
            (beginning-of-line)
            (setq start (point))
-           (unless (= 0 (forward-line)) (newline))
+           (unless (line-start-after-forward-line-p) (newline))
            (setq end (point))))
     (setq deactivate-mark nil)
     (goto-char end)
@@ -54,7 +58,7 @@ the beginning of next line."
 (defun move-to-yank-pos (p)
   "Move pointer P to correct yank position."
   (goto-char p)
-  (unless (line-start-p p)
+  (unless (line-start-p)
     (unless (= 0 (forward-line))
       (newline))))
 
