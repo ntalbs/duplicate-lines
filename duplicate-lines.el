@@ -72,5 +72,4 @@
   (global-set-key (kbd "s-<down>") 'duplicate-region))
 
 (provide 'duplicate-lines)
-
-;;; duplicate-block.el ends here
+;;; duplicate-lines.el ends here
