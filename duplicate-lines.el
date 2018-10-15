@@ -44,7 +44,9 @@ the beginning of next line."
            (beginning-of-line)
            (setq start (point))
            (goto-char p2)
-           (unless (= 0 (current-column)) (unless (duplicate-lines-line-start-after-forward-line-p) (newline)))
+           (unless (= 0 (current-column))
+             (unless (duplicate-lines-line-start-after-forward-line-p)
+               (newline)))
            (setq end (point)))
           (t
            (beginning-of-line)
