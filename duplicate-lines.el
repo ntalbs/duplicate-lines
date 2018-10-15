@@ -55,13 +55,6 @@ the beginning of next line."
     (goto-char end)
     (set-mark start)))
 
-(defun move-to-yank-pos (p)
-  "Move pointer P to correct yank position."
-  (goto-char p)
-  (unless (line-start-p)
-    (unless (= 0 (forward-line))
-      (newline))))
-
 ;;;###autoload
 (defun duplicate-lines (p1 p2)
   "Duplicate line or region.
@@ -74,7 +67,6 @@ If it doesn't have active mark, it will select current line and duplicate it."
           end   (region-end)
           len   (- end start)
           text  (buffer-substring start end))
-    (move-to-yank-pos end)
     (insert text)
     (set-mark (- (point) len))
     (setq deactivate-mark nil)
