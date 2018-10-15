@@ -2,7 +2,7 @@
 
 ;; Copyright © 2018 Seongjun Yun
 ;; Author: Seongjun Yun
-;; Keywords: duplicate line region selection
+;; Keywords: convenience duplicate line region selection
 ;; URL: https://github.com/ntalbs/duplicate-lines
 ;; Version: 0.0.1
 
@@ -25,16 +25,16 @@
 
 ;;; Code:
 
-(defun line-start-p ()
+(defun duplicate-lines-line-start-p ()
   "Return 't if current position is beginning of line."
   (= 0 (current-column)))
 
-(defun line-start-after-forward-line-p ()
+(defun duplicate-lines-line-start-after-forward-line-p ()
   "Return 't if the position is beginning of line after foward-line."
   (forward-line)
-  (line-start-p))
+  (duplicate-lines-line-start-p))
 
-(defun expand-selection (p1 p2)
+(defun duplicate-lines-expand-selection (p1 p2)
   "Expand selection to contain while lines.
 Expand P1 to beginning of line and P2 to end of line (or more precisely)
 the beginning of next line."
@@ -44,12 +44,12 @@ the beginning of next line."
            (beginning-of-line)
            (setq start (point))
            (goto-char p2)
-           (unless (= 0 (current-column)) (unless (line-start-after-forward-line-p) (newline)))
+           (unless (= 0 (current-column)) (unless (duplicate-lines-line-start-after-forward-line-p) (newline)))
            (setq end (point)))
           (t
            (beginning-of-line)
            (setq start (point))
-           (unless (line-start-after-forward-line-p) (newline))
+           (unless (duplicate-lines-line-start-after-forward-line-p) (newline))
            (setq end (point))))
     (setq deactivate-mark nil)
     (goto-char end)
@@ -63,13 +63,13 @@ the beginning of next line."
       (newline))))
 
 ;;;###autoload
-(defun duplicate-region (p1 p2)
+(defun duplicate-lines (p1 p2)
   "Duplicate line or region.
 If it has active mark (P1, P2), it will expand the selection and duplicate it.
 If it doesn't have active mark, it will select current line and duplicate it."
   (interactive "r")
   (let (start end len text)
-    (expand-selection p1 p2)
+    (duplicate-lines-expand-selection p1 p2)
     (setq start (region-beginning)
           end   (region-end)
           len   (- end start)
@@ -81,7 +81,7 @@ If it doesn't have active mark, it will select current line and duplicate it."
     (setq transient-mark-mode (cons 'only t))))
 
 ;;;###autoload
-(defun duplicate-region-default-binding ()
+(defun duplicate-lines-default-binding ()
   "Default binding of duplicate-region, M-s-<down>."
   (interactive)
   (global-set-key (kbd "M-s-<down>") 'duplicate-region))
