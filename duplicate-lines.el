@@ -76,7 +76,7 @@ If it doesn't have active mark, it will select current line and duplicate it."
 
 ;;;###autoload
 (defun duplicate-lines-default-binding ()
-  "Default binding of duplicate-region, M-s-<down>."
+  "Default binding of `duplicate-lines`, M-s-<down>."
   (interactive)
   (global-set-key (kbd "M-s-<down>") 'duplicate-region))
 
