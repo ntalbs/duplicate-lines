@@ -58,18 +58,18 @@ the beginning of next line."
     (set-mark start)))
 
 ;;;###autoload
-(defun duplicate-lines (p1 p2)
-  "Duplicate line or region.
+(defun duplicate-lines (p1 p2 n)
+  "Duplicate line or region N times.
 If it has active mark (P1, P2), it will expand the selection and duplicate it.
 If it doesn't have active mark, it will select current line and duplicate it."
-  (interactive "r")
+  (interactive "r\np")
   (let (start end len text)
     (duplicate-lines-expand-selection p1 p2)
     (setq start (region-beginning)
           end   (region-end)
           len   (- end start)
           text  (buffer-substring start end))
-    (insert text)
+    (dotimes (i (or n 1)) (insert text))
     (set-mark (- (point) len))
     (setq deactivate-mark nil)
     (setq transient-mark-mode (cons 'only t))))
