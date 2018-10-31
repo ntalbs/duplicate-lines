@@ -1,4 +1,4 @@
-;;; duplicate-lines.el --- Duplicate current line & selection
+;;; duplicate-lines.el --- Duplicate the current line or region
 
 ;; Copyright © 2018 Seongjun Yun
 ;; Author: Seongjun Yun
