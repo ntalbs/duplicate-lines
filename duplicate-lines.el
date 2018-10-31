@@ -30,16 +30,17 @@
   (forward-line)
   (= 0 (current-column)))
 
-(defun duplicate-lines-expand-selection (p1 p2)
+(defun duplicate-lines-expand-selection ()
   "Expand selection to contain while lines.
 Expand P1 to beginning of line and P2 to end of line (or more precisely)
 the beginning of next line."
-  (let (start end)
+  (let ((start (region-beginning))
+        (end   (region-end)))
     (cond (mark-active
-           (goto-char p1)
+           (goto-char start)
            (beginning-of-line)
            (setq start (point))
-           (goto-char p2)
+           (goto-char end)
            (unless (= 0 (current-column))
              (unless (duplicate-lines-line-start-after-forward-line-p)
                (newline)))
@@ -54,13 +55,13 @@ the beginning of next line."
     (set-mark start)))
 
 ;;;###autoload
-(defun duplicate-lines (p1 p2 n)
+(defun duplicate-lines (n)
   "Duplicate line or region N times.
 If it has active mark (P1, P2), it will expand the selection and duplicate it.
 If it doesn't have active mark, it will select current line and duplicate it."
-  (interactive "r\np")
+  (interactive "p")
   (let (start end len text)
-    (duplicate-lines-expand-selection p1 p2)
+    (duplicate-lines-expand-selection)
     (setq start (region-beginning)
           end   (region-end)
           len   (- end start)
@@ -74,7 +75,7 @@ If it doesn't have active mark, it will select current line and duplicate it."
 (defun duplicate-lines-default-binding ()
   "Default binding of `duplicate-lines`, M-s-<down>."
   (interactive)
-  (global-set-key (kbd "M-s-<down>") 'duplicate-region))
+  (global-set-key (kbd "M-s-<down>") 'duplicate-lines))
 
 (provide 'duplicate-lines)
 ;;; duplicate-lines.el ends here
