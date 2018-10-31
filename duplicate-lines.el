@@ -30,29 +30,36 @@
   (forward-line)
   (= 0 (current-column)))
 
+(defun duplicate-lines-select-current-line ()
+  "Select current line."
+  (let (start end)
+    (beginning-of-line)
+    (setq start (point))
+    (unless (duplicate-lines-line-start-after-forward-line-p) (newline))
+    (setq end (point))
+    (setq deactivate-mark nil)
+    (set-mark start)))
+
 (defun duplicate-lines-expand-selection ()
-  "Expand selection to contain while lines.
-Expand P1 to beginning of line and P2 to end of line (or more precisely)
-the beginning of next line."
+  "Expand selection to contain while lines."
   (let ((start (region-beginning))
         (end   (region-end)))
-    (cond (mark-active
-           (goto-char start)
-           (beginning-of-line)
-           (setq start (point))
-           (goto-char end)
-           (unless (= 0 (current-column))
-             (unless (duplicate-lines-line-start-after-forward-line-p)
-               (newline)))
-           (setq end (point)))
-          (t
-           (beginning-of-line)
-           (setq start (point))
-           (unless (duplicate-lines-line-start-after-forward-line-p) (newline))
-           (setq end (point))))
-    (setq deactivate-mark nil)
+    (goto-char start)
+    (beginning-of-line)
+    (setq start (point))
     (goto-char end)
+    (unless (= 0 (current-column))
+      (unless (duplicate-lines-line-start-after-forward-line-p)
+        (newline)))
+    (setq end (point))
+    (setq deactivate-mark nil)
     (set-mark start)))
+
+(defun duplicate-lines-at (p text n)
+  "Duplicate TEXT N times at P."
+  (dotimes (i (or n 1)) (insert text))
+  (set-mark p)
+  (setq deactivate-mark nil))
 
 ;;;###autoload
 (defun duplicate-lines (n)
@@ -60,15 +67,15 @@ the beginning of next line."
 If it has active mark (P1, P2), it will expand the selection and duplicate it.
 If it doesn't have active mark, it will select current line and duplicate it."
   (interactive "p")
+  (if mark-active
+      (duplicate-lines-expand-selection)
+    (duplicate-lines-select-current-line))
   (let (start end len text)
-    (duplicate-lines-expand-selection)
     (setq start (region-beginning)
           end   (region-end)
           len   (- end start)
           text  (buffer-substring start end))
-    (dotimes (i (or n 1)) (insert text))
-    (set-mark (- (point) len))
-    (setq deactivate-mark nil)
+    (duplicate-lines-at end text n)
     (setq transient-mark-mode (cons 'only t))))
 
 ;;;###autoload
